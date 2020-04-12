@@ -1,4 +1,4 @@
 This is a simple Spring boot application.
 Here we put spring boot jpa dependency in pom.xml
-
-Run the application and open "http://localhost:16000/swagger-ui.html#/" swagger url in browser 
+Install postgres from https://www.postgresql.org/download/windows/  and set user id and password
+Run the application and open "http://localhost:8000/swagger-ui.html#/" swagger url in browser 

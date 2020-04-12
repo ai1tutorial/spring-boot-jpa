@@ -3,8 +3,11 @@ package com.spring.boot.jpa.ai1tutorial.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +27,7 @@ import com.spring.boot.jpa.ai1tutorial.service.EmployeeService;
 @RestController
 public class EmployeeController {
 	
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
 
 
 	 @Autowired
@@ -35,6 +39,7 @@ public class EmployeeController {
 	   */
 	  @GetMapping("/Employees")
 	  public List<Employee> getAllEmployees() {
+	    LOGGER.info("Returning all employee Details");
 	    return employeeService.findAll();
 	  }
 
@@ -48,8 +53,9 @@ public class EmployeeController {
 	  @GetMapping("/Employees/{id}")
 	  public ResponseEntity<Employee> getEmployeesById(@PathVariable(value = "id") Integer EmployeeId)
 	      throws Exception {
-	        Employee Employee = employeeService.getEmployeeByid(EmployeeId);
-	    return ResponseEntity.ok().body(Employee);
+	        Employee employee = employeeService.getEmployeeByid(EmployeeId);
+		    LOGGER.info("Returning employee Detail {}",employee.getEmpId());
+	    return ResponseEntity.ok().body(employee);
 	  }
 
 	  /**
@@ -59,8 +65,9 @@ public class EmployeeController {
 	   * @return the Employee
 	   */
 	  @PostMapping("/createEmployee")
-	  public Employee createEmployee(@Valid @RequestBody Employee Employee) {
-	    return employeeService.createEmployee(Employee);
+	  public Employee createEmployee(@Valid @RequestBody Employee employee) {
+		LOGGER.info("Created employee Detail {}",employee.getEmpId());
+	    return employeeService.createEmployee(employee);
 	  }
 	  
 
@@ -81,6 +88,7 @@ public class EmployeeController {
 	    employee.setEmpId(employeeDetails.getEmpId());
 	    employee.setEmpName(employeeDetails.getEmpName());
 	    final Employee updatedEmployee = employeeService.createEmployee(employee);
+		LOGGER.info("Updated employee Detail {}",updatedEmployee.getEmpId());
 	    return ResponseEntity.ok(updatedEmployee);
 	  }
 
@@ -97,6 +105,7 @@ public class EmployeeController {
 	    employeeService.deleteEmployee(Employee);
 	    Map<String, Boolean> response = new HashMap<>();
 	    response.put("deleted", Boolean.TRUE);
+		LOGGER.info("Deleted employee Detail {}",Employee.getEmpId());
 	    return response;
 	  }
 
